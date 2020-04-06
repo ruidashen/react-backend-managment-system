@@ -1,6 +1,4 @@
-/*
-处理文件上传的路由
- */
+
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
@@ -8,8 +6,8 @@ const fs = require('fs')
 const dirPath = path.join(__dirname, '..', 'public/upload')
 
 const storage = multer.diskStorage({
-  // destination: 'upload', //string时,服务启动将会自动创建文件夹
-  destination: function (req, file, cb) { //函数需手动创建文件夹
+  // destination: 'upload', 
+  destination: function (req, file, cb) { 
     // console.log('destination()', file)
     if (!fs.existsSync(dirPath)) {
       fs.mkdir(dirPath, function (err) {
@@ -34,13 +32,14 @@ const uploadSingle = upload.single('image')
 
 module.exports = function fileUpload(router) {
 
-  // 上传图片
+  
   router.post('/manage/img/upload', (req, res) => {
-    uploadSingle(req, res, function (err) { //错误处理
+    uploadSingle(req, res, function (err) { 
       if (err) {
         return res.send({
           status: 1,
-          msg: '上传文件失败'
+          msg: 'Upload File Failed',
+          err
         })
       }
       var file = req.file
@@ -48,14 +47,14 @@ module.exports = function fileUpload(router) {
         status: 0,
         data: {
           name: file.filename,
-          url: 'http://localhost:5000/upload/' + file.filename
+          url: 'http://localhost:5001/upload/' + file.filename
         }
       })
 
     })
   })
 
-  // 删除图片
+  
   router.post('/manage/img/delete', (req, res) => {
     const {name} = req.body
     fs.unlink(path.join(dirPath, name), (err) => {
@@ -63,7 +62,7 @@ module.exports = function fileUpload(router) {
         console.log(err)
         res.send({
           status: 1,
-          msg: '删除文件失败'
+          msg: 'Delete File Failed'
         })
       } else {
         res.send({

@@ -4,8 +4,8 @@ const md5 = require('blueimp-md5')
 
 
 const userSchema = new mongoose.Schema({
-  username: {type: String, required: true}, // 用户名
-  password: {type: String, required: true}, // 密码
+  username: {type: String, required: true}, 
+  password: {type: String, required: true}, 
   phone: String,
   email: String,
   create_time: {type: Number, default: Date.now},

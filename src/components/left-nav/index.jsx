@@ -49,12 +49,15 @@ class LeftNav extends Component {
   }
 
   render() {
-    const path = this.props.location.pathname;
+    let path = this.props.location.pathname;
+    if (path.indexOf("/product") === 0) {
+      path = "/product";
+    }
     return (
       <div to="/" className="left-nav">
         <Link to="/" className="left-nav-header">
           <Icon type="user" className="icon" />
-          <h1>React CMS</h1>
+          <h1 style={{ fontSize: "1em" }}>React Back End Management System</h1>
         </Link>
 
         <div>
