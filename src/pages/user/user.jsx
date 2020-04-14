@@ -4,6 +4,8 @@ import formateDate from "../../utils/formatDateUtils";
 import LinkButton from "../../components/link-button";
 import { PAGE_SIZE } from "../../utils/constants";
 import { reqGetUsers } from "../../api";
+const { confirm } = Modal;
+
 export default class User extends Component {
   constructor(props) {
     super(props);
@@ -52,13 +54,24 @@ export default class User extends Component {
         render: (user) => (
           <span>
             <LinkButton>Modify</LinkButton>
-            <LinkButton>Delete</LinkButton>
+            <LinkButton onClick={this.deleteUser}>Delete</LinkButton>
           </span>
         ),
       },
     ];
   };
 
+  deleteUser = async () => {
+    confirm({
+      title: 'Do you Want to delete this user?',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
   getUsers = async () => {
     const result = await reqGetUsers();
     if (result.status === 0) {
@@ -71,7 +84,7 @@ export default class User extends Component {
     }
   };
 
-  addOrUpdateUser = () => {};
+  addOrUpdateUser = () => { };
 
   componentDidMount = () => {
     this.getUsers();

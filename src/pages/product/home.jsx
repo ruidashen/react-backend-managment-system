@@ -37,22 +37,25 @@ export default class ProductHome extends Component {
         }
       },
       {
-        width: 100,
+        width: 150,
+
         title: "Status",
         // dataIndex: "status",
         render: product => {
           const { status, _id } = product;
           const newStatus = status === 1 ? 2 : 1;
           return (
-            <span>
-              <Button
-                type="primary"
-                onClick={() => this.updateStatus(_id, newStatus)}
-              >
-                {status === 1 ? "Remove" : "Launch"}
-              </Button>
-              <span>{status === 1 ? "On Sale" : "Discontinued"}</span>
-            </span>
+            <div id='status_cell'>
+              <span>
+                <span>{status === 1 ? "On Sale" : "Discontinued"}</span>
+                <Button id='modify_status_button'
+                  type="primary"
+                  onClick={() => this.updateStatus(_id, newStatus)}
+                >
+                  {status === 1 ? "Remove from store" : "Launch"}
+                </Button>
+              </span>
+            </div>
           );
         }
       },
