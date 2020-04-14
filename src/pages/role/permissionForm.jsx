@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Form, Select, Input, Tree } from "antd";
 import menuList from "../../config/menuConfig";
@@ -6,33 +6,33 @@ import menuList from "../../config/menuConfig";
 const Item = Form.Item;
 // Form component used to add category
 
-class PermissionForm extends Component {
+class PermissionForm extends PureComponent {
   constructor(props) {
     super(props);
     this.treeNodes = this.getTreeNodes(menuList);
 
     const { menus } = this.props.role;
     this.state = {
-      checkedKeys: menus
+      checkedKeys: menus,
     };
   }
 
   static propTypes = {
-    role: PropTypes.object
+    role: PropTypes.object,
   };
 
-  getTreeNodes = menuList => {
+  getTreeNodes = (menuList) => {
     return menuList.reduce((pre, item) => {
       pre.push({
         title: item.title,
         key: item.key,
-        children: item.children ? this.getTreeNodes(item.children) : null
+        children: item.children ? this.getTreeNodes(item.children) : null,
       });
       return pre;
     }, []);
   };
 
-  onCheck = checkedKeys => {
+  onCheck = (checkedKeys) => {
     this.setState({ checkedKeys });
   };
 
@@ -41,7 +41,7 @@ class PermissionForm extends Component {
   componentWillReceiveProps(nextProps) {
     const menus = nextProps.role.menus;
     this.setState({
-      checkedKeys: menus
+      checkedKeys: menus,
     });
   }
 
@@ -51,7 +51,7 @@ class PermissionForm extends Component {
     const tree = {
       title: "System Permission",
       key: "all",
-      children: this.treeNodes
+      children: this.treeNodes,
     };
     return (
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 15 }}>
