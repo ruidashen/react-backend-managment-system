@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Table, Card, Button, Modal } from "antd";
+import { Table, Card, Button, Modal, message } from "antd";
 import formateDate from "../../utils/formatDateUtils";
 import LinkButton from "../../components/link-button";
 import { PAGE_SIZE } from "../../utils/constants";
-import { reqGetUsers } from "../../api";
+import { reqGetUsers, reqDeleteUser } from "../../api";
+import CreateUserForm from "./createUserForm";
 const { confirm } = Modal;
 
 export default class User extends Component {
@@ -54,24 +55,27 @@ export default class User extends Component {
         render: (user) => (
           <span>
             <LinkButton>Modify</LinkButton>
-            <LinkButton onClick={this.deleteUser}>Delete</LinkButton>
+            <LinkButton onClick={() => this.deleteUser(user)}>
+              Delete
+            </LinkButton>
           </span>
         ),
       },
     ];
   };
 
-  deleteUser = async () => {
+  deleteUser = (user) => {
     confirm({
-      title: 'Do you Want to delete this user?',
-      onOk() {
-        console.log('OK');
-      },
-      onCancel() {
-        console.log('Cancel');
+      title: `Do you want to delete ${user.username}?`,
+      onOk: async () => {
+        const result = await reqDeleteUser(user._id);
+        if (result.status === 0) {
+          message.success("User deleted!");
+          this.getUsers();
+        }
       },
     });
-  }
+  };
   getUsers = async () => {
     const result = await reqGetUsers();
     if (result.status === 0) {
@@ -84,14 +88,18 @@ export default class User extends Component {
     }
   };
 
-  addOrUpdateUser = () => { };
+  addOrUpdateUser = () => {};
 
   componentDidMount = () => {
     this.getUsers();
   };
   render() {
     const { users, isModalOn } = this.state;
-    const title = <Button type="primary">Create User</Button>;
+    const title = (
+      <Button type="primary" onClick={() => this.setState({ isModalOn: true })}>
+        Create User
+      </Button>
+    );
     return (
       <Card title={title}>
         <Table
@@ -111,7 +119,7 @@ export default class User extends Component {
           onOk={this.addOrUpdateUser}
           onCancel={() => this.setState({ isModalOn: false })}
         >
-          <div>Add or Update</div>
+          <CreateUserForm setForm={(form) => (this.form = form)} />
         </Modal>
       </Card>
     );
