@@ -4,7 +4,6 @@ import {
   Form,
   Input,
   Cascader,
-  Upload,
   Button,
   Icon,
   message
@@ -42,7 +41,7 @@ class ProductAddUpdate extends Component {
 
     // If user requested a modify
     const { isUpdate, product } = this;
-    const { pCategoryId, categoryId } = product;
+    const { pCategoryId } = product;
     if (isUpdate && pCategoryId !== "0") {
       const subCategory = await this.getCategories(pCategoryId);
       // Generate lv2 category list

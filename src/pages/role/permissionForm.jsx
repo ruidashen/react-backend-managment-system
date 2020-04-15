@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Form, Select, Input, Tree } from "antd";
+import { Form, Input, Tree } from "antd";
 import menuList from "../../config/menuConfig";
 
 const Item = Form.Item;

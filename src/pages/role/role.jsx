@@ -5,6 +5,7 @@ import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 import AddForm from "./addForm";
 import PermissionForm from "./permissionForm";
 import memoryUtils from "../../utils/memoryUtils";
+import storeageUtils from '../../utils/storeageUtils';
 import formatDate from "../../utils/formatDateUtils";
 export default class Role extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ export default class Role extends Component {
   onRow = role => {
     return {
       onClick: () => {
-        this.setState({ role }, () => {});
+        this.setState({ role }, () => { });
       }
     };
   };
@@ -88,8 +89,16 @@ export default class Role extends Component {
     const result = await reqUpdateRole(role);
 
     if (result.status === 0) {
-      message.success("Role updated!");
       this.getRoles();
+      if (role._id === memoryUtils.user.role_id) {
+        memoryUtils.user = {};
+        storeageUtils.removeUser();
+        this.props.history.replace('/login');
+        message.info('Permission for his role has changed, please login again')
+      } else {
+        message.success("Role updated!");
+      }
+
     } else {
       message.error("Request failed");
     }

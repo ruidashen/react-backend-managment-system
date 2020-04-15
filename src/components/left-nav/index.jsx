@@ -3,6 +3,8 @@ import { Menu, Icon } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import "./index.less";
 import menuList from "../../config/menuConfig";
+import memoryUtils from '../../utils/memoryUtils';
+
 const { SubMenu } = Menu;
 /*
 left-nav component
@@ -15,39 +17,63 @@ class LeftNav extends Component {
   }
   getMenuNodes(menuList) {
     return menuList.map(item => {
-      if (item.children) {
-        // Find an item which has the key that matches current path name.
-        const cItem = item.children.find(
-          childItem => childItem.key === this.props.location.pathname
-        );
-        if (cItem) {
-          this.openKey = item.key;
+      // Check if user has permission to see this path
+      if (this.userHasAuth(item)) {
+        if (item.children) {
+          // Find an item which has the key that matches current path name.
+          const cItem = item.children.find(
+            childItem => childItem.key === this.props.location.pathname
+          );
+          if (cItem) {
+            this.openKey = item.key;
+          }
+          return (
+            <SubMenu
+              key={item.key}
+              title={
+                <span>
+                  <Icon type={item.icon}></Icon>
+                  <span>{item.title}</span>
+                </span>
+              }
+            >
+              {this.getMenuNodes(item.children)}
+            </SubMenu>
+          );
+        } else {
+          return (
+            <Menu.Item key={item.key}>
+              <Link to={item.key}></Link>
+              <Icon type={item.icon}></Icon>
+              <span>{item.title}</span>
+            </Menu.Item>
+          );
         }
-        return (
-          <SubMenu
-            key={item.key}
-            title={
-              <span>
-                <Icon type={item.icon}></Icon>
-                <span>{item.title}</span>
-              </span>
-            }
-          >
-            {this.getMenuNodes(item.children)}
-          </SubMenu>
-        );
-      } else {
-        return (
-          <Menu.Item key={item.key}>
-            <Link to={item.key}></Link>
-            <Icon type={item.icon}></Icon>
-            <span>{item.title}</span>
-          </Menu.Item>
-        );
       }
     });
   }
 
+  userHasAuth = (item) => {
+    const { key, isPublic } = item;
+    const menus = memoryUtils.user.role.menus;
+    const username = memoryUtils.user.username;
+
+
+    /**
+     * 1. If user is admin
+     * 2. If current item is public
+     * 3. If current user has permission to this path, look for the key in user's menu
+     * 4. If current user has permission to this path's children paths.
+     */
+
+    if (username === 'admin' || isPublic || menus.indexOf(key) >= 0) {
+      return true;
+    } else if (item.children) { // condition 4
+      return !!item.children.find(child => menus.indexOf(child.key) >= 0); // convert to boolean
+    }
+
+    return false;
+  }
   render() {
     let path = this.props.location.pathname;
     if (path.indexOf("/product") === 0) {

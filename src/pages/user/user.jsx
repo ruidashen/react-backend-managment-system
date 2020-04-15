@@ -3,7 +3,7 @@ import { Table, Card, Button, Modal, message } from "antd";
 import formateDate from "../../utils/formatDateUtils";
 import LinkButton from "../../components/link-button";
 import { PAGE_SIZE } from "../../utils/constants";
-import { reqGetUsers, reqDeleteUser } from "../../api";
+import { reqGetUsers, reqDeleteUser, reqAddOrUpdateUser } from "../../api";
 import CreateUserForm from "./createUserForm";
 const { confirm } = Modal;
 
@@ -54,7 +54,7 @@ export default class User extends Component {
         title: "Action",
         render: (user) => (
           <span>
-            <LinkButton>Modify</LinkButton>
+            <LinkButton onClick={() => this.showUpdate(user)}>Modify</LinkButton>
             <LinkButton onClick={() => this.deleteUser(user)}>
               Delete
             </LinkButton>
@@ -63,6 +63,12 @@ export default class User extends Component {
       },
     ];
   };
+  showUpdate = (user) => {
+    this.user = user;
+    this.setState({
+      isModalOn: true
+    })
+  }
 
   deleteUser = (user) => {
     confirm({
@@ -88,15 +94,36 @@ export default class User extends Component {
     }
   };
 
-  addOrUpdateUser = () => {};
+
+  addOrUpdateUser = async () => {
+    // Collect input
+    const user = this.form.getFieldsValue();
+    this.form.resetFields();
+    if (this.user) {
+      user._id = this.user._id;
+    }
+    // Send create user request
+    const result = await reqAddOrUpdateUser(user);
+    if (result.status === 0) {
+      message.success('User ' + (this.user ? 'modified!' : 'created!'));
+      this.getUsers();
+      this.setState({ isModalOn: false });
+    }
+  };
+
+  showCreate = () => {
+    this.user = null;
+    this.setState({ isModalOn: true });
+  }
 
   componentDidMount = () => {
     this.getUsers();
   };
   render() {
-    const { users, isModalOn } = this.state;
+    const { users, isModalOn, roles } = this.state;
+    const user = this.user || {};
     const title = (
-      <Button type="primary" onClick={() => this.setState({ isModalOn: true })}>
+      <Button type="primary" onClick={() => this.setState(this.showCreate)}>
         Create User
       </Button>
     );
@@ -114,14 +141,17 @@ export default class User extends Component {
           }}
         />
         <Modal
-          title="Add Category"
+          title={user._id ? 'Modify User' : 'Create User'}
           visible={isModalOn}
           onOk={this.addOrUpdateUser}
-          onCancel={() => this.setState({ isModalOn: false })}
+          onCancel={() => {
+            this.setState({ isModalOn: false })
+            this.form.resetFields();
+          }}
         >
-          <CreateUserForm setForm={(form) => (this.form = form)} />
+          <CreateUserForm setForm={(form) => (this.form = form)} roles={roles} user={this.user} />
         </Modal>
-      </Card>
+      </Card >
     );
   }
 }

@@ -13,14 +13,18 @@ class CreateUserForm extends PureComponent {
 
   static propTypes = {
     setForm: PropTypes.func.isRequired,
+    roles: PropTypes.array.isRequired,
+    user: PropTypes.object
   };
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { roles } = this.props;
+    const user = this.props.user || {};
     return (
       <Form labelCol={{ span: 6 }} wrapperCol={{ span: 15 }}>
         <Item label="User Name:">
           {getFieldDecorator("username", {
-            initialValue: "",
+            initialValue: user.username,
             rules: [
               {
                 required: true,
@@ -29,22 +33,25 @@ class CreateUserForm extends PureComponent {
             ],
           })(<Input placeholder="Please enter user name"></Input>)}
         </Item>
-        <Item label="Password:">
-          {getFieldDecorator("password", {
-            initialValue: "",
-            rules: [
-              {
-                required: true,
-                message: "Password is required!",
-              },
-            ],
-          })(
-            <Input placeholder="Please enter password" type="password"></Input>
-          )}
-        </Item>
+        {user._id ? null : (
+          <Item label="Password:">
+            {getFieldDecorator('password', {
+              initialValue: user.password,
+              rules: [
+                {
+                  required: true,
+                  message: "Password is required!",
+                },
+              ],
+            })(
+              <Input placeholder="Please enter password" type="password"></Input>
+            )}
+          </Item>
+        )}
+
         <Item label="Phone number:">
-          {getFieldDecorator("phone", {
-            initialValue: "",
+          {getFieldDecorator('phone', {
+            initialValue: user.phone,
             rules: [
               {
                 required: true,
@@ -54,8 +61,8 @@ class CreateUserForm extends PureComponent {
           })(<Input placeholder="Please enter phone number"></Input>)}
         </Item>
         <Item label="Email:">
-          {getFieldDecorator("email", {
-            initialValue: "",
+          {getFieldDecorator('email', {
+            initialValue: user.email,
             rules: [
               {
                 required: true,
@@ -66,7 +73,7 @@ class CreateUserForm extends PureComponent {
         </Item>
         <Item label="Role:">
           {getFieldDecorator("role_id", {
-            initialValue: "1",
+            initialValue: user.role_id,
             rules: [
               {
                 required: true,
@@ -75,8 +82,7 @@ class CreateUserForm extends PureComponent {
             ],
           })(
             <Select>
-              <Option value="1">Role1</Option>
-              <Option value="2">Role2</Option>
+              {roles.map(role => <Option key={role._id}>{role.name}</Option>)}
             </Select>
           )}
         </Item>

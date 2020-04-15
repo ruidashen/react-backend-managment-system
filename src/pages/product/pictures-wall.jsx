@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Upload, Icon, Modal, message } from "antd";
+import { Upload, Modal, message } from "antd";
 import { reqDeleteImg } from "../../api";
 import PropTypes from "prop-types";
 import { BASE_IMG_URL } from "../../utils/constants";

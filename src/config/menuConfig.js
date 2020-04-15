@@ -1,15 +1,14 @@
-const menuList = [
-  {
+const menuList = [{
     title: "Home",
-    key: "/home",
-    icon: "home"
+    key: "/home", // Path
+    icon: "home",
+    isPublic: true
   },
   {
     title: "Products",
     key: "/products",
     icon: "appstore",
-    children: [
-      {
+    children: [{
         title: "Category",
         key: "/category",
         icon: "bars"
@@ -35,14 +34,21 @@ const menuList = [
     title: "Charts",
     key: "/charts",
     icon: "area-chart",
-    children: [
-      {
+    children: [{
         title: "Bar Chart",
         key: "/charts/bar",
         icon: "bar-chart"
       },
-      { title: "Line Chart", key: "/charts/line", icon: "line-chart" },
-      { title: "Pie Chart", key: "/charts/pie", icon: "pie-chart" }
+      {
+        title: "Line Chart",
+        key: "/charts/line",
+        icon: "line-chart"
+      },
+      {
+        title: "Pie Chart",
+        key: "/charts/pie",
+        icon: "pie-chart"
+      }
     ]
   }
 ];

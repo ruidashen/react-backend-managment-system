@@ -12,10 +12,6 @@ export const reqLogin = (username, password) =>
     password
   }, "POST");
 
-// Add user
-export const reqAddUser = (user) =>
-  ajax(BASE + "/manage/user/add", user, "POST");
-
 // Get category lists
 export const reqCategories = (parentId) =>
   ajax(BASE + "/manage/category/list", {
@@ -129,3 +125,6 @@ export const reqGetUsers = () => ajax(BASE + "/manage/user/list");
 export const reqDeleteUser = (userId) => ajax(BASE + "/manage/user/delete", {
   userId
 }, 'POST');
+
+// Create or update an user in database
+export const reqAddOrUpdateUser = (user) => ajax(BASE + "/manage/user/" + (user._id ? 'update' : 'add'), user, 'POST');
