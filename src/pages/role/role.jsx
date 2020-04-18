@@ -5,7 +5,7 @@ import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 import AddForm from "./addForm";
 import PermissionForm from "./permissionForm";
 import memoryUtils from "../../utils/memoryUtils";
-import storeageUtils from '../../utils/storeageUtils';
+import storeageUtils from "../../utils/storeageUtils";
 import formatDate from "../../utils/formatDateUtils";
 export default class Role extends Component {
   constructor(props) {
@@ -18,37 +18,37 @@ export default class Role extends Component {
     roles: [], // all roles
     role: {}, // role currently selected
     showAddForm: false,
-    showPermissionForm: false
+    showPermissionForm: false,
   };
 
   initColumn = () => {
     this.columns = [
       {
         title: "Role Name",
-        dataIndex: "name"
+        dataIndex: "name",
       },
       {
         title: "Time Created",
         dataIndex: "create_time",
-        render: formatDate
+        render: formatDate,
       },
       {
         title: "Time Authorized",
         dataIndex: "auth_time",
-        render: formatDate
+        render: formatDate,
       },
       {
         title: "Authorizer",
-        dataIndex: "auth_name"
-      }
+        dataIndex: "auth_name",
+      },
     ];
   };
 
-  onRow = role => {
+  onRow = (role) => {
     return {
       onClick: () => {
-        this.setState({ role }, () => { });
-      }
+        this.setState({ role });
+      },
     };
   };
   addRole = () => {
@@ -61,8 +61,8 @@ export default class Role extends Component {
           message.success("Role Added!");
 
           const role = result.data;
-          this.setState(state => ({
-            roles: [...state.roles, role]
+          this.setState((state) => ({
+            roles: [...state.roles, role],
           }));
         } else {
           message.error("Request failed! Something was wrong");
@@ -93,12 +93,11 @@ export default class Role extends Component {
       if (role._id === memoryUtils.user.role_id) {
         memoryUtils.user = {};
         storeageUtils.removeUser();
-        this.props.history.replace('/login');
-        message.info('Permission for his role has changed, please login again')
+        this.props.history.replace("/login");
+        message.info("Permission for his role has changed, please login again");
       } else {
         message.success("Role updated!");
       }
-
     } else {
       message.error("Request failed");
     }
@@ -135,7 +134,10 @@ export default class Role extends Component {
           onRow={this.onRow}
           rowSelection={{
             type: "radio",
-            selectedRowKeys: [role._id]
+            selectedRowKeys: [role._id],
+            onSelect: (role) => {
+              this.setState({ role });
+            },
           }}
           bordered
           columns={this.columns}
@@ -144,7 +146,7 @@ export default class Role extends Component {
           pagination={{
             defaultPageSize: PAGE_SIZE,
             showQuickJumper: true,
-            showSizeChanger: true
+            showSizeChanger: true,
           }}
         />
 
@@ -158,7 +160,7 @@ export default class Role extends Component {
           }}
         >
           <AddForm
-            setForm={form => {
+            setForm={(form) => {
               this.form = form;
             }}
           ></AddForm>

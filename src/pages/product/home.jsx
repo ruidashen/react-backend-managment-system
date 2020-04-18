@@ -11,7 +11,7 @@ export default class ProductHome extends Component {
     total: 0, // Total number of products
     loading: false,
     keywords: "", // Search keywords
-    searchType: "productName" // Name or Description
+    searchType: "productName", // Name or Description
   };
 
   constructor(props) {
@@ -23,32 +23,33 @@ export default class ProductHome extends Component {
     this.columns = [
       {
         title: "Name",
-        dataIndex: "name"
+        dataIndex: "name",
       },
       {
         title: "Description",
-        dataIndex: "desc"
+        dataIndex: "desc",
       },
       {
         title: "Price",
         dataIndex: "price",
-        render: price => {
+        render: (price) => {
           return "$" + price;
-        }
+        },
       },
       {
         width: 150,
 
         title: "Status",
         // dataIndex: "status",
-        render: product => {
+        render: (product) => {
           const { status, _id } = product;
           const newStatus = status === 1 ? 2 : 1;
           return (
-            <div id='status_cell'>
+            <div id="status_cell">
               <span>
                 <span>{status === 1 ? "On Sale" : "Discontinued"}</span>
-                <Button id='modify_status_button'
+                <Button
+                  id="modify_status_button"
                   type="primary"
                   onClick={() => this.updateStatus(_id, newStatus)}
                 >
@@ -57,12 +58,12 @@ export default class ProductHome extends Component {
               </span>
             </div>
           );
-        }
+        },
       },
       {
         width: 100,
         title: "Action",
-        render: product => {
+        render: (product) => {
           return (
             <span>
               <LinkButton
@@ -81,8 +82,8 @@ export default class ProductHome extends Component {
               </LinkButton>
             </span>
           );
-        }
-      }
+        },
+      },
     ];
   };
 
@@ -94,7 +95,7 @@ export default class ProductHome extends Component {
     }
   };
 
-  getProducts = async pageNum => {
+  getProducts = async (pageNum) => {
     this.setState({ loading: true });
     this.pageNum = pageNum; // Make page number visible to other functions
     const { keywords, searchType } = this.state;
@@ -104,7 +105,7 @@ export default class ProductHome extends Component {
         pageNum,
         pageSize: PAGE_SIZE,
         keywords,
-        searchType
+        searchType,
       });
     } else {
       result = await reqProducts(pageNum, PAGE_SIZE);
@@ -128,8 +129,8 @@ export default class ProductHome extends Component {
       <span>
         <Select
           value={searchType}
-          onChange={value => this.setState({ searchType: value })}
-          style={{ width: "150px" }}
+          onChange={(value) => this.setState({ searchType: value })}
+          style={{ width: "165px" }}
         >
           <Option value="productName">Search by name</Option>
           <Option value="productDesc">Search by description</Option>
@@ -138,7 +139,7 @@ export default class ProductHome extends Component {
           placeholder="keyword"
           style={{ width: 150, margin: "0 15px" }}
           value={keywords}
-          onChange={event => {
+          onChange={(event) => {
             this.setState({ keywords: event.target.value });
           }}
         ></Input>
@@ -168,7 +169,8 @@ export default class ProductHome extends Component {
             defaultPageSize: PAGE_SIZE,
             showQuickJumper: true,
             onChange: this.getProducts,
-            loading: { loading }
+            loading: { loading },
+            current: this.pageNum,
           }}
         ></Table>
       </Card>
