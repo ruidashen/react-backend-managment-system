@@ -1,13 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import storageUtils from "./utils/storeageUtils";
-import memoryUtils from "./utils/memoryUtils";
+import storageUtils from "./utils/storageUtils";
 
+import { Provider } from "react-redux";
+import store from "./redux/store";
 /*
 Application entry
 */
 
-const user = storageUtils.getUser();
-memoryUtils.user = user;
-ReactDOM.render(<App></App>, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App></App>
+  </Provider>,
+  document.getElementById("root")
+);

@@ -4,10 +4,11 @@ import { PAGE_SIZE } from "../../utils/constants";
 import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 import AddForm from "./addForm";
 import PermissionForm from "./permissionForm";
-import memoryUtils from "../../utils/memoryUtils";
-import storeageUtils from "../../utils/storeageUtils";
+import storageUtils from "../../utils/storageUtils";
 import formatDate from "../../utils/formatDateUtils";
-export default class Role extends Component {
+import { connect } from "react-redux";
+import { logout } from "../../redux/actions";
+class Role extends Component {
   constructor(props) {
     super(props);
     this.initColumn();
@@ -84,16 +85,15 @@ export default class Role extends Component {
     const role = this.state.role;
     const menus = this.permissionFormRef.current.getMenus();
     role.menus = menus;
-    role.auth_name = memoryUtils.user.username;
+    const user = this.props.user;
+    role.auth_name = user.username;
 
     const result = await reqUpdateRole(role);
 
     if (result.status === 0) {
       this.getRoles();
-      if (role._id === memoryUtils.user.role_id) {
-        memoryUtils.user = {};
-        storeageUtils.removeUser();
-        this.props.history.replace("/login");
+      if (role._id === user.role_id) {
+        this.props.logout();
         message.info("Permission for his role has changed, please login again");
       } else {
         message.success("Role updated!");
@@ -181,3 +181,5 @@ export default class Role extends Component {
     );
   }
 }
+
+export default connect((state) => ({ user: state.user }), { logout })(Role);
