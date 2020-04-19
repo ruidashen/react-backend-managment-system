@@ -4,7 +4,6 @@ import { PAGE_SIZE } from "../../utils/constants";
 import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 import AddForm from "./addForm";
 import PermissionForm from "./permissionForm";
-import storageUtils from "../../utils/storageUtils";
 import formatDate from "../../utils/formatDateUtils";
 import { connect } from "react-redux";
 import { logout } from "../../redux/actions";

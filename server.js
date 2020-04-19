@@ -14,6 +14,20 @@ app.use("/", indexRouter); //
 
 const fs = require("fs");
 
+app.use((req, res) => {
+  fs.readFile(__dirname + "/public/index.html", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.send("Server Error");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+      });
+      res.end(data);
+    }
+  });
+});
+
 mongoose
   .connect("mongodb://127.0.0.1:27017/", { useNewUrlParser: true })
   .then(() => {
@@ -22,6 +36,6 @@ mongoose
       console.log("Database is now connected at http://localhost:5001");
     });
   })
-  .catch(error => {
+  .catch((error) => {
     console.error("Connect to databse failed", error);
   });

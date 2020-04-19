@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Icon, Modal } from "antd";
 import { reqWeather } from "../../api/";
-import storageUtils from "../../utils/storageUtils";
 import formateDate from "../../utils/formatDateUtils";
 import LinkButton from "../../components/link-button";
 import "./index.less";
