@@ -3,9 +3,8 @@ import { Form, Icon, Input, Button, message } from "antd";
 import { Redirect } from "react-router-dom";
 import "./login.less";
 import logo from "../../assests/images/icon.png";
-import { reqLogin } from "../../api";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storeageUtils";
+import { connect } from "react-redux";
+import { login } from "../../redux/actions";
 /*
     Login page 
  */
@@ -23,40 +22,26 @@ class Login extends Component {
       callback();
     }
   };
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         const { username, password } = values;
-        try {
-          const response = await reqLogin(username, password);
-          const result = response; // {status: 0||1}
-          if (result.status === 0) {
-            message.success(`Login success!`);
-            const user = result.data;
-            // save user to local storage
-            memoryUtils.user = user;
-            storageUtils.saveUser(user);
-            this.props.history.replace("/");
-          } else {
-            message.error(result.msg);
-          }
-        } catch (err) {
-          console.log(err);
-        }
+        this.props.login(username, password);
       } else {
         console.log(err);
       }
     });
   };
   render() {
-    const form = this.props.form;
-    const { getFieldDecorator } = form;
-    const user = memoryUtils.user;
-
+    const user = this.props.user;
     if (user && user._id) {
       return <Redirect to="/"></Redirect>;
     }
+
+    const errorMsg = this.props.user.errorMsg;
+    const form = this.props.form;
+    const { getFieldDecorator } = form;
     return (
       <div className="login">
         <header className="login-header">
@@ -64,6 +49,7 @@ class Login extends Component {
           <h1>React Content Management System</h1>
         </header>
         <section className="login-content">
+          <div>{errorMsg}</div>
           <h2>Login</h2>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
@@ -72,22 +58,22 @@ class Login extends Component {
                   {
                     required: true,
                     whitespace: true,
-                    message: "Please input your username!"
+                    message: "Please input your username!",
                   },
                   {
                     max: 12,
-                    message: "Username must be less than 12 characters!"
+                    message: "Username must be less than 12 characters!",
                   },
                   {
                     min: 4,
-                    message: "Username must be at least 4 characters long!"
+                    message: "Username must be at least 4 characters long!",
                   },
                   {
                     pattern: /^[a-zA-Z0-9_]+$/,
                     message:
-                      "Username can only contain numbers,letters and underscore."
-                  }
-                ]
+                      "Username can only contain numbers,letters and underscore.",
+                  },
+                ],
               })(
                 <Input
                   prefix={
@@ -99,7 +85,7 @@ class Login extends Component {
             </Form.Item>
             <Form.Item>
               {getFieldDecorator("password", {
-                rules: [{ validator: this.Pwdvalidator }]
+                rules: [{ validator: this.Pwdvalidator }],
               })(
                 <Input
                   prefix={
@@ -128,4 +114,6 @@ class Login extends Component {
 
 const WrapFormLogin = Form.create()(Login);
 
-export default WrapFormLogin;
+export default connect((state) => ({ user: state.user }), { login })(
+  WrapFormLogin
+);
