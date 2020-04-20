@@ -1,6 +1,6 @@
 # React Backend Management System
 
-Here's the [Demo](http://13.59.50.112), it is hosted by AWS. Please feel free to play around with it, since the app is using one database, you might see data coming from other users.
+Here's the <a href="http://13.59.50.112" target="_blank">Demo</a>, it is hosted by AWS. Please feel free to play around with it, since the app is using one database, you might see data coming from other users.
 
 **Default** **username**: **admin** 
 
