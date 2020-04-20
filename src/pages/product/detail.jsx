@@ -8,7 +8,7 @@ const Item = List.Item;
 export default class ProductDetail extends Component {
   state = {
     cName1: "", // Lv1 category name
-    cName2: "" // Lv2 category name
+    cName2: "", // Lv2 category name
   };
 
   async componentDidMount() {
@@ -25,14 +25,14 @@ export default class ProductDetail extends Component {
       // request Lv1 category and Lv2 category names at the same time
       const results = await Promise.all([
         reqCategory(pCategoryId),
-        reqCategory(categoryId)
+        reqCategory(categoryId),
       ]);
       const cName1 = results[0].data.name;
       const cName2 = results[1].data.name;
 
       this.setState({
         cName1,
-        cName2
+        cName2,
       });
     }
   }
@@ -43,12 +43,11 @@ export default class ProductDetail extends Component {
       desc,
       price,
       detail,
-      imgs
+      imgs,
     } = this.props.location.state.product;
-    let imgTags = imgs.map(img => {
+    let imgTags = imgs.map((img) => {
       return (
         <span key={img}>
-          {" "}
           <img className="product-img" src={BASE_IMG_URL + img} alt="img" />
         </span>
       );
