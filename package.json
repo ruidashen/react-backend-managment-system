@@ -34,7 +34,8 @@
     "store": "^2.0.12"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"npm run admin\" \"npm run server\"",
+    "start-dev": "concurrently --kill-others \"npm run admin\" \"npm run server\"",
+    "start": "npm run server",
     "admin": "react-app-rewired start",
     "server": "node server.js",
     "build": "react-app-rewired build",
