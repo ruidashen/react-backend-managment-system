@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
 
-app.use(express.static("public"));
+app.use(express.static("build"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -15,7 +15,7 @@ app.use("/", indexRouter); //
 const fs = require("fs");
 
 app.use((req, res) => {
-  fs.readFile(__dirname + "/public/index.html", (err, data) => {
+  fs.readFile(__dirname + "/build/index.html", (err, data) => {
     if (err) {
       console.log(err);
       res.send("Server Error");
