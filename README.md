@@ -1,5 +1,12 @@
 # React Backend Management System
 
+Here's the [Demo](http://13.59.50.112), it is hosted by AWS. Please feel free to play around with it, since the app is using one database, you might see data coming from other users.
+
+**Default** **username**: **admin** 
+
+**Default** **password**: **admin**
+
+
 This project is full stack MERN app, it is a mock up backend for e-commerce website. Functionalities include: 
 1. user login
 
@@ -26,12 +33,6 @@ This project is full stack MERN app, it is a mock up backend for e-commerce webs
     ![menu visiablity demo](https://i.ibb.co/GW9yW1m/role-management.gif)
 
 ## Getting Started
-
-**Default** **username**: **admin** 
-
-**Default** **password**: **admin**
-
-Here's the [Demo](http://13.59.50.112), it is hosted by AWS. Please feel free to play around with it, since the app is using one database, you might see data coming from other users.
 
 If you want to run this project locally, 
 
