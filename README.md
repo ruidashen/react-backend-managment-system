@@ -2,16 +2,27 @@
 
 This project is full stack MERN app, it is a mock up backend for e-commerce website. Functionalities include: 
 1. user login
+
    ![login demo](https://i.ibb.co/jDFqdKL/login.gif)
+   
 2. product category management 
+
    ![category management demo](https://i.ibb.co/m56brGp/category-management.gif)
+   
 3. product management
+
    ![product management demo](https://i.ibb.co/Z85dKp2/product-management.gif)
+   
 4. role management 
+
    ![role management demo](https://i.ibb.co/F5X25fp/role-management.gif)
+   
 5. user management 
+
    ![user management demo](https://i.ibb.co/BVqsMKc/user-management.gif)
+   
 6. menu visiablity control 
+
     ![menu visiablity demo](https://i.ibb.co/GW9yW1m/role-management.gif)
 
 ## Getting Started
