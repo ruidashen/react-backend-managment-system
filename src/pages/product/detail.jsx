@@ -69,7 +69,7 @@ export default class ProductDetail extends Component {
     );
     return (
       <Card title={title} className="product-detail">
-        <List>
+        <List className="list">
           <Item>
             <span className="left">Product Name:</span>
             <span>{name}</span>
@@ -90,11 +90,11 @@ export default class ProductDetail extends Component {
           </Item>
           <Item>
             <span className="left">Product Images:</span>
-            {imgTags}
+            <span>{imgTags}</span>
           </Item>
           <Item>
             <span className="left">Product Detail:</span>
-            <span dangerouslySetInnerHTML={{ __html: detail }}></span>
+            <div dangerouslySetInnerHTML={{ __html: detail }}></div>
           </Item>
         </List>
       </Card>
