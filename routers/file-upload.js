@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const dirPath = path.join(__dirname, "..", "build/upload");
+const dirPath = path.join(__dirname, "..", "/upload");
 
 const storage = multer.diskStorage({
   // destination: 'upload',
@@ -26,6 +26,7 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now() + ext);
   },
 });
+
 const upload = multer({ storage });
 const uploadSingle = upload.single("image");
 

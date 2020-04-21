@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 app.use(express.static("build"));
-
+app.use(express.static("upload"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const cookieParser = require("cookie-parser");
