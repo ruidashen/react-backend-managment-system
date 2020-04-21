@@ -45,7 +45,9 @@ export default class ProductDetail extends Component {
       detail,
       imgs,
     } = this.props.location.state.product;
+
     let imgTags = imgs.map((img) => {
+      console.log(BASE_IMG_URL + img);
       return (
         <span key={img}>
           <img className="product-img" src={BASE_IMG_URL + img} alt="img" />

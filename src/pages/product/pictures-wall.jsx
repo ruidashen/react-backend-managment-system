@@ -8,49 +8,50 @@ function getBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 }
 
 export default class PicturesWall extends Component {
   constructor(props) {
     super(props);
-
+    console.log();
     let fileList = [];
     const { imgs } = this.props;
+    console.log(imgs);
     if (imgs && imgs.length > 0) {
       fileList = imgs.map((img, index) => ({
         uid: -index,
         name: img,
         status: "done",
-        url: BASE_IMG_URL + img
+        url: BASE_IMG_URL + img,
       }));
     }
     this.state = {
       previewVisible: false,
       previewImage: "",
-      fileList
+      fileList,
     };
   }
 
   static propTypes = {
-    imgs: PropTypes.array
+    imgs: PropTypes.array,
   };
   getImgs = () => {
-    return this.state.fileList.map(file => file.name);
+    return this.state.fileList.map((file) => file.name);
   };
 
   // Hide modal
   handleCancel = () => this.setState({ previewVisible: false });
 
-  handlePreview = async file => {
+  handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
 
     this.setState({
       previewImage: file.url || file.preview,
-      previewVisible: true
+      previewVisible: true,
     });
   };
 
